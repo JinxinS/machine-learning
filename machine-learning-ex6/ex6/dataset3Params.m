@@ -22,13 +22,18 @@ sigma = 0.3;
 %  Note: You can compute the prediction error using 
 %        mean(double(predictions ~= yval))
 %
-
-
-
-
-
-
-
+steps = [0.01 0.03 0.1 0.3 1 3 10 30];
+[v1,v2] = meshgrid (steps,steps);
+comb = [v1(:),v2(:)];
+err = [];
+for i = 1 : size(comb,1) 
+	model = svmTrain(X, y, comb(i,1), @(x1,x2) gaussianKernel(x1,x2, comb(i,2))); 
+	predictions = svmPredict(model, Xval);
+	err =[err; mean(double(predictions ~= yval))];
+end
+[~,ix] = min(err);
+C = comb(ix,1);
+sigma = comb(ix,2);
 % =========================================================================
 
 end
