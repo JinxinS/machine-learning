@@ -20,10 +20,16 @@ idx = zeros(size(X,1), 1);
 %
 % Note: You can use a for-loop over the examples to compute this.
 %
+%size(X)
+%size(centroids)
+%size(idx)
+m = size(X,1);
+dist = zeros(m,K);
+for i = 1 : K
+     dist(:,i)= sum((X - repmat(centroids(i,:),m,1)).^2,2);
+end
 
-
-
-
+[~,idx]  = min(dist,[],2);
 
 
 
